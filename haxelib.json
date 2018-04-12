@@ -1,0 +1,16 @@
+{
+  "name": "autotest",
+  "description": "",
+  "version": "0.0.1",
+  "releasenote": "Initial release. (See CHANGELOG.md)",
+  "url": "https://github.com/kLabz/autotest",
+  "license": "MIT",
+  "tags": [],
+  "classPath": "src",
+  "contributors": [
+    "klabz"
+  ],
+	"dependencies": {
+		"buddy": ""
+	}
+}
