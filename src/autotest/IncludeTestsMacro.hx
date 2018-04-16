@@ -190,7 +190,12 @@ class IncludeTestsMacro {
 	}
 
 	static function tryOverride(current:String, defined:String):String {
-		if (defined != null) return dotReg.replace(defined, "/");
+		if (defined != null) {
+			var parsed = dotReg.replace(defined, "/");
+			if (!StringTools.endsWith(parsed, "/")) parsed += "/";
+			return parsed;
+		}
+
 		return current;
 	}
 
