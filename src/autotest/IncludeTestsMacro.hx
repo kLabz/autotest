@@ -49,31 +49,33 @@ class IncludeTestsMacro {
 			return makeTestSuiteProxy(fields, testSuite);
 		}
 
-		var path = extractPath();
-		if (path == null) Context.error('Could not find the sources directory', Context.currentPos());
+		var paths = extractPath();
+		if (paths == null) Context.error('Could not find the sources directory', Context.currentPos());
 
 		#if (redux && redux_test_coverage)
 		handleReduxConfig();
 		#end
 
 		var suites = [];
-		var suitesData = extractTestSuites(path, path, {
-			suites: [],
+		for (path in paths) {
+			var suitesData = extractTestSuites(path, path, {
+				suites: [],
+				#if (redux && redux_test_coverage)
+				reduxCoverage: {
+					reducer: {total: 0, untested: []},
+					middleware: {total: 0, untested: []},
+					thunk: {total: 0, untested: []},
+					selector: {total: 0, untested: []}
+				}
+				#end
+			});
+
+			for (s in suitesData.suites) suites.push(extractExpr(path, s));
+
 			#if (redux && redux_test_coverage)
-			reduxCoverage: {
-				reducer: {total: 0, untested: []},
-				middleware: {total: 0, untested: []},
-				thunk: {total: 0, untested: []},
-				selector: {total: 0, untested: []}
-			}
+			addReduxCoverage(suites, suitesData);
 			#end
-		});
-
-		for (s in suitesData.suites) suites.push(extractExpr(path, s));
-
-		#if (redux && redux_test_coverage)
-		addReduxCoverage(suites, suitesData);
-		#end
+		}
 
 		Context.defineType({
 			name: 'TestSuites',
@@ -122,15 +124,16 @@ class IncludeTestsMacro {
 		}).fields);
 	}
 
-	static function extractPath():String {
+	static function extractPath():Array<String> {
+		var paths = [];
 		var clsPath = Context.getClassPath();
 		for (c in clsPath) {
 			var t = c.trim();
 			if (t.length > 0 && t.charAt(0) != "#" && t.charAt(0) != "/")
-				return c;
+				paths.push(t);
 		}
 
-		return null;
+		return paths;
 	}
 
 	static function extractExpr(base:String, path:String):Expr {
