@@ -1,9 +1,0 @@
-extraParams.hxml
--lib buddy
-
--cp src
--cp test
--js .build/test.js
-
--D nodejs
--D buddy-colors

@@ -1,8 +1,8 @@
 {
   "name": "autotest",
-  "description": "",
-  "version": "0.0.1",
-  "releasenote": "Initial release. (See CHANGELOG.md)",
+  "description": "Extract all *Tests.hx files and execute them as buddy test suites",
+  "version": "0.1.0",
+  "releasenote": "Initial release.",
   "url": "https://github.com/kLabz/autotest",
   "license": "MIT",
   "tags": [],
