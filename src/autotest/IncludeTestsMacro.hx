@@ -44,7 +44,7 @@ class IncludeTestsMacro {
 	public static function buildTests() {
 		var fields = Context.getBuildFields();
 
-		var testSuite = Compiler.getDefine('autotest_suite');
+		var testSuite = Context.definedValue('autotest_suite');
 		if (testSuite != null && StringTools.trim(testSuite) != "") {
 			return makeTestSuiteProxy(fields, testSuite);
 		}
